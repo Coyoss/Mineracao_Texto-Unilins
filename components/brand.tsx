@@ -6,7 +6,7 @@ export function Brand() {
       <span className="brand-mark" aria-hidden="true"><ScanText size={22} /></span>
       <span>
         <span className="brand-name">TextoLab</span>
-        <span className="brand-school">UNILINS</span>
+        <span className="brand-school">PROJETO ACADÊMICO</span>
       </span>
     </span>
   );

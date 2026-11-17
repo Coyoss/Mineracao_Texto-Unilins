@@ -10,10 +10,10 @@ export function Header() {
     <div className="container nav-wrap">
       <Link href="/" aria-label="TextoLab - início"><Brand /></Link>
       <nav id="main-navigation" className={`nav-links ${open ? "open" : ""}`} aria-label="Navegação principal">
-        <a href="#inicio" onClick={() => setOpen(false)}>Início</a>
-        <a href="#sobre" onClick={() => setOpen(false)}>Sobre o projeto</a>
-        <a href="#conteudos" onClick={() => setOpen(false)}>Conteúdos</a>
-        <a href="#metodo" onClick={() => setOpen(false)}>Como funciona</a>
+        <a href="/#inicio" onClick={() => setOpen(false)}>Início</a>
+        <a href="/#sobre" onClick={() => setOpen(false)}>Sobre o projeto</a>
+        <a href="/#conteudos" onClick={() => setOpen(false)}>Conteúdos</a>
+        <Link href="/idealizadores" onClick={() => setOpen(false)}>Conheça os idealizadores</Link>
         <Link className="mobile-entry" href="/login" onClick={() => setOpen(false)}>Entrar <ArrowUpRight size={13} /></Link>
       </nav>
       <Link className="btn btn-primary nav-cta" href="/login">Acessar plataforma <ArrowUpRight size={14} /></Link>

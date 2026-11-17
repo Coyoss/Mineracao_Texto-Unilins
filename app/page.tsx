@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Braces, ChartNoAxesColumn, FileSearch, GitBranch, Languages, Network, ScanText, Sparkles, TextSearch, Workflow } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Braces, ChartNoAxesColumn, FileSearch, GitBranch, Languages, Network, ScanText, Sparkles, TextSearch } from "lucide-react";
 import { Header } from "@/components/header";
 import { Brand } from "@/components/brand";
 
@@ -12,8 +12,7 @@ const topics = [
   { icon: ChartNoAxesColumn, title: "Frequência de palavras", desc: "Investigue ocorrências, distribuição e relevância de termos." },
   { icon: Sparkles, title: "Análise de sentimentos", desc: "Compreenda abordagens para identificar opiniões em textos." },
   { icon: Languages, title: "Processamento de linguagem", desc: "Conheça conceitos e tarefas fundamentais de PLN." },
-  { icon: Network, title: "Representação vetorial", desc: "Veja como textos podem ser representados numericamente." },
-  { icon: Workflow, title: "Aplicações práticas", desc: "Relacione técnicas de análise textual a problemas reais." }
+  { icon: Network, title: "Representação vetorial e classificação", desc: "Represente documentos numericamente e entenda como classificá-los." }
 ];
 
 export default function Home() {
@@ -24,11 +23,11 @@ export default function Home() {
         <div className="container hero-grid">
           <div>
             <span className="eyebrow">Projeto acadêmico · Unilins</span>
-            <h1>Mineração de texto e PLN</h1>
-            <p className="hero-copy">Aprenda a identificar padrões em textos com técnicas de análise e processamento de linguagem natural.</p>
+            <h1>Transforme palavras em conhecimento.</h1>
+            <p className="hero-copy">Aprenda a extrair padrões de textos com técnicas de mineração e processamento de linguagem natural. Leia, pratique e acompanhe sua evolução.</p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href="/login">Acessar plataforma <ArrowRight size={18} /></Link>
-              <a className="btn btn-secondary" href="#conteudos">Ver conteúdos</a>
+              <Link className="btn btn-primary" href="/login">Começar minha jornada <ArrowRight size={18} /></Link>
+              <a className="btn btn-secondary" href="#conteudos">Explorar conteúdos</a>
             </div>
           </div>
           <figure className="visual-card">
@@ -76,8 +75,8 @@ export default function Home() {
       <section className="section" id="conteudos">
         <div className="container">
           <div className="section-head">
-            <h2>Trilha de aprendizagem</h2>
-            <p>Uma visão dos principais assuntos que compõem o universo da mineração de texto e do processamento de linguagem natural. Os conteúdos serão disponibilizados progressivamente.</p>
+            <h2>O que você vai aprender?</h2>
+            <p>A trilha inicial passa pelos fundamentos, pelo pré-processamento e pela análise de textos. Cada aula inclui uma atividade de verificação.</p>
           </div>
           <div className="topic-grid">
             {topics.map(({icon: Icon,title,desc}) => <article className="topic-card" key={title}>
@@ -90,7 +89,7 @@ export default function Home() {
       <section className="section section-alt" id="metodo">
         <div className="container">
           <div className="section-head">
-            <h2>Como funciona</h2>
+            <h2>Conheça a plataforma</h2>
             <p>Uma sequência didática para conectar fundamentos, técnicas e aplicação.</p>
           </div>
           <div className="steps">
@@ -98,13 +97,22 @@ export default function Home() {
               ["01","Aprenda os conceitos","Construa uma base para compreender os dados textuais."],
               ["02","Conheça as técnicas","Entenda os métodos utilizados no processamento."],
               ["03","Explore exemplos","Observe como as técnicas se comportam em diferentes textos."],
-              ["04","Aplique os conhecimentos","Conecte o aprendizado a problemas e cenários reais."]
+              ["04","Acompanhe sua evolução","Veja seu progresso e desbloqueie conquistas ao concluir as atividades."]
             ].map(([num,title,desc]) => <article className="step" key={num}><span className="step-num">{num}</span><h3>{title}</h3><p>{desc}</p></article>)}
           </div>
         </div>
       </section>
 
       <section className="section">
+        <div className="container home-learning">
+          <div className="section-head"><h2>Aprenda e evolua</h2><p>Conclua aulas para ganhar XP, avançar de nível e acompanhar sua posição se optar pelo ranking.</p></div>
+          <div className="learn-card demo-card">
+            <p className="kicker">Exemplo demonstrativo</p>
+            <h3>Nível 3 · Analista</h3>
+            <div className="learn-progress"><progress max={100} value={50} aria-label="Progresso fictício" /><span>50%</span></div>
+            <dl><div><dt>Pontuação</dt><dd>180 XP</dd></div><div><dt>Ranking</dt><dd>5ª posição</dd></div><div><dt>Conquista</dt><dd>Primeiros passos</dd></div></dl>
+          </div>
+        </div>
         <div className="container">
           <div className="cta">
             <div><h2>Acesse a área do estudante</h2><p>Acesse a plataforma e acompanhe a evolução dos conteúdos educacionais.</p></div>
@@ -116,7 +124,7 @@ export default function Home() {
     <footer className="footer">
       <div className="container footer-inner">
         <Brand />
-        <div className="footer-links"><a href="#sobre">Projeto</a><a href="#conteudos">Conteúdos</a><Link href="/login">Entrar</Link></div>
+        <div className="footer-links"><a href="#sobre">Projeto</a><a href="#conteudos">Conteúdos</a><Link href="/idealizadores">Idealizadores</Link><Link href="/login">Entrar</Link></div>
         <span>© {new Date().getFullYear()} TextoLab. Projeto acadêmico.</span>
       </div>
     </footer>

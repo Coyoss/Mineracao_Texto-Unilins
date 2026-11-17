@@ -49,7 +49,8 @@ A chave pública/anon pode ser usada no cliente com RLS habilitado. **Nunca** co
 - `/` — apresentação pública
 - `/login` — login Google
 - `/auth/callback` — troca segura do código OAuth por sessão
-- `/dashboard` — área protegida no servidor
+- `/dashboard` — área protegida no servidor, com estudos, ranking, conquistas e perfil
+- `/idealizadores` — apresentação da equipe
 
 ## Deploy na Vercel
 
@@ -58,22 +59,30 @@ A chave pública/anon pode ser usada no cliente com RLS habilitado. **Nunca** co
 3. Configure as mesmas variáveis de ambiente em **Project → Settings → Environment Variables**.
 4. Atualize `NEXT_PUBLIC_SITE_URL` para `https://SEU-DOMINIO.vercel.app`.
 5. Inclua `https://SEU-DOMINIO.vercel.app/auth/callback` nas Redirect URLs do Supabase.
-6. Faça o deploy e teste login, retorno, atualização de página e logout.
 
-## Verificações
+## Ativar os estudos no Supabase
 
-```bash
-npm run typecheck
-npm run build
-```
+Em um projeto de teste, execute supabase/migrations/202611170001_textolab.sql pelo SQL Editor ou pelo fluxo de migrações já adotado no projeto. Depois de validar o fluxo em teste, aplique a mesma migração no banco usado pela Vercel. A migração cria o schema textolab e as funções public.textolab_* e inclui três módulos com oito aulas. Ela pressupõe que esses nomes ainda estejam livres no banco de destino. As rotas existentes de OAuth e a configuração da Vercel continuam usando as mesmas variáveis do projeto.
 
-Os comandos acima devem ser executados no ambiente com dependências instaladas. Este pacote contém o código-fonte e as configurações; a autenticação externa só pode ser validada depois de inserir as credenciais e configurar Google/Supabase.
+- O schema textolab tem RLS habilitada em todas as tabelas e não tem acesso direto concedido a anon ou authenticated. As quatro funções autorizadas para authenticated usam auth.uid(), caminho de busca fixo, e retornam somente o estado privado do próprio aluno e os campos consentidos do ranking.
+- A conclusão exige acertar a questão da aula. As respostas corretas ficam no banco. O registro da atividade e as transações de XP são gravados na mesma operação. Chaves únicas e uma trava por aluno impedem duplicação por repetição ou ações simultâneas.
+- A tabela textolab.rules configura XP futuro por tipo de atividade. A entrega pontua aulas e módulos. Exercícios e avaliações como atividades independentes estão previstos nas regras, sem concessão automática. Alterações de regra não recalculam o histórico. A tabela textolab.levels define os limiares.
+- O ranking é opcional e usa apelido e iniciais, sem e-mail, foto do Google ou identificador interno. Empates em XP compartilham a posição. A listagem tem 12 participantes por página e é recalculada em cada consulta.
+- Ajuste nome, formação, função, mini biografia, contribuição e foto em lib/idealizadores.ts. As imagens autorizadas devem ficar em public/images/idealizadores/ e usar caminhos locais. A página começa com placeholders editáveis.
+- Referência de cor institucional [Mídia Kit Unilins](https://unilins.edu.br/midia-kit-unilins/). Tipografia, superfícies e componentes pertencem à identidade do projeto acadêmico.
 
-## Segurança e escopo
+## Arquivos da reformulação
 
-- A rota `/dashboard` valida a sessão no servidor via `supabase.auth.getUser()`.
-- O middleware atualiza cookies de sessão e protege a rota.
-- O callback valida `next` para evitar redirecionamento externo.
-- Não há banco de dados de perfil nem coleta de dados adicionais nesta primeira fase.
-- Os módulos didáticos aparecem como planejados, não como conteúdo funcional.
-- Antes de armazenar dados de estudantes em tabelas futuras, habilite RLS e escreva políticas por usuário.
+- Modificados app/globals.css, app/page.tsx, app/dashboard/page.tsx, components/header.tsx, components/brand.tsx e este README.
+- Adicionados app/dashboard/actions.ts, app/dashboard/loading.tsx, app/idealizadores/page.tsx, lib/idealizadores.ts, a pasta de fotos e a migração.
+- Reutilizados os clientes Supabase, o callback OAuth, o middleware, o botão de sair, as classes de marca e os componentes de navegação. Nenhuma dependência nova.
+
+## Validação de entrega
+
+A revisão de código e a conferência do commit são possíveis pelo GitHub. Build, execução da migração, OAuth real e inspeção visual exigem um ambiente de execução e um Supabase configurado. Antes de publicar, execute npm run typecheck e npm run build. Depois, valide:
+
+1. Entrar com Google, abrir /dashboard e sair. Sem sessão, confirmar o redirecionamento para /login.
+2. Abrir uma aula e verificar que o progresso continua intacto. Errar a questão e confirmar que o XP não muda. Acertar e conferir +20 XP. Reenviar a resposta em duas abas e confirmar uma única concessão.
+3. Completar a última aula do módulo e conferir o bônus de +100 XP, histórico e, quando aplicável, a notificação de nível ou conquista.
+4. Usar duas contas. Participar do ranking com uma delas, conferir apelido, XP e progresso, e cancelar a participação. Consultas com anon devem ser recusadas e um aluno deve ver apenas o próprio histórico.
+5. Conferir Home, /idealizadores e Dashboard em desktop, tablet e celular, incluindo navegação por teclado e movimento reduzido.
